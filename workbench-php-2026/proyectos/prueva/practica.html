@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Carrito fácil</title>
+<style>
+table { border-collapse: collapse; width: 70%; margin: auto; }
+th, td { border: 1px solid #999; padding: 8px; text-align: center; }
+th { background-color: #007bff; color: white; }
+.total { background-color: #d4edda; font-weight: bold; }
+body { font-family: Arial; text-align: center; margin-top: 40px; }
+</style>
+</head>
+<body>
+
+<h1>🛒 Mi carrito de compras</h1>
+
+<table>
+<tr>
+    <th>ID</th>
+    <th>Nombre</th>
+    <th>Precio</th>
+    <th>Cantidad</th>
+    <th>IVA</th>
+    <th>Subtotal</th>
+</tr>
+
+<?php
+// 💬 Recorremos el carrito y mostramos cada producto
+for ($i = 0; $i < count($carrito); $i++) {
+    $producto = $carrito[$i];
+    $iva_texto = $producto["iva_r"] == 0 ? "21%" : "10%";
+    $sub = subtotal($producto);
+    $total += $sub;
+
+    echo "<tr>";
+    echo "<td>" . $producto["id"] . "</td>";
+    echo "<td>" . $producto["nombre"] . "</td>";
+    echo "<td>" . number_format($producto["precio"], 2) . " €</td>";
+    echo "<td>" . $producto["cant"] . "</td>";
+    echo "<td>" . $iva_texto . "</td>";
+    echo "<td>" . number_format($sub, 2) . " €</td>";
+    echo "</tr>";
+}
+?>
+
+<tr class="total">
+    <td colspan="5">TOTAL A PAGAR</td>
+    <td><?php echo number_format($total, 2); ?> €</td>
+</tr>
+</table>
+
+</body>
+</html>

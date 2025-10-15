@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <h3>Carro de la compra</h3>
+
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>IVA</th>
+        </tr>
+
+        <?php
+        foreach ($carrito as $producto) {
+            echo "<tr>";
+            echo "<td>" . $producto["id"] . "</td>";
+            echo "<td>" . $producto["nombre"] . "</td>";
+            echo "<td>" . $producto["precio"] . " €</td>";
+            echo "<td>" . $producto["cant"] . "</td>";
+            echo "<td>" . ($producto["iva_r"] == 0 ? "21%" : "10%") . "</td>";
+            echo "</tr>";
+        }
+        ?>
+    <tr class="total">
+    <td colspan="5">TOTAL A PAGAR</td>
+    <td><?php echo number_format($total, 2); ?> €</td>
+</tr>
+</table>
+
+</body>
+
+</html>
