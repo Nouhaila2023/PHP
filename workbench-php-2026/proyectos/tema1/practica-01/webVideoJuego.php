@@ -127,50 +127,49 @@
 
 foreach ($personajes as $pj) {
 
-    // Contenedor principal: imagen + contenido
-    echo "<div style=\"display:flex; align-items:flex-start; margin-bottom:50px;\">";
+echo "<div style='display:flex; align-items:flex-start; margin-bottom:50px;'>";
 
-        // Imagen del personaje
-        echo "<div style=\"width:450px; text-align:center;\">";
-        echo "<img src=\"" . $pj['url'] . "\" width=\"400\">";
-        echo "</div>";
+// imagen del personaje
+echo "<div style='width:450px; text-align:center;'>";
+echo "<img src='" . $pj['url'] . "' width='400'>";
+echo "</div>";
 
-        // Texto e información
-        echo "<div style=\"flex:1; padding-left:20px;\">";
+// titulo
+echo "<div style='flex:1; padding-left:20px;'>";
 
-            // Nombre y descripción
-            echo "<h2 style=\"color:#d3b37c; font-family:serif;\">" . $pj['nombre'] . "</h2>";
-            echo "<p style=\"color:#cfc6b8;\">" . $pj['descripcion'] . "</p>";
+// Nombre 
+echo "<h2 style='color:#d3b37c; font-family:serif;'>" . $pj['nombre'] . "</h2>";
+//descripción
+echo "<p style='color:#cfc6b8;'>" . $pj['descripcion'] . "</p>";
 
-            // Lista de puntos/habilidades
-            echo "<ul style=\"color:#cfc6b8;\">";
-            foreach ($pj['puntos'] as $punto) {
-                echo "<li>" . $punto . "</li>";
-            }
-            echo "</ul>";
+// los puntos
+echo "<ul style='color:#cfc6b8;'>";
+foreach ($pj['puntos'] as $punto) {
+    echo "<li>" . $punto . "</li>";
+}
+echo "</ul>";
 
-            // Video a la izquierda y fotos a la derecha (flexbox)
-            echo "<div style=\"display:flex; margin-top:10px; align-items:flex-start; gap:20px;\">";
+// Video a la izquierda y fotos a la derecha con (flexbox) 
+echo "<div style='display:flex; margin-top:20px; align-items:flex-start; gap:20px;'>";
 
-                // Video
-                echo "<video width=\"350\" controls style=\"border:1px solid #d3b37c; border-radius:5px;\">";
-                echo "<source src=\"" . $pj['video'] . "\" type=\"video/webm\">";
-                echo "</video>";
+// Video
+echo "<video width='600' controls style='border:1px solid #d3b37c; border-radius:5px;'>";
+echo "<source src='" . $pj['video'] . "' type='video/webm'>";
+echo "</video>";
 
-                // Fotos de habilidades (opcional)
-                if(!empty($pj['imagenes'])) {
-                    echo "<div style=\"display:grid; grid-template-columns: repeat(2, 60px); gap:5px;\">";
-                    foreach ($pj['imagenes'] as $img) {
-                        echo "<img src=\"" . $img . "\" width=\"60\" style=\"border:1px solid #333;\">";
-                    }
-                    echo "</div>";
-                }
+// Fotos 
+if (!empty($pj['imagenes'])) {
+    echo "<div style='display:grid; grid-template-columns: repeat(2, 160px); gap:2px;'>";
+    foreach ($pj['imagenes'] as $img) {
+        echo "<img src='" . $img . "' width='160' style='border:1px solid #d3b37c;'>";
+    }
+    echo "</div>";
+}
 
-            echo "</div>"; // fin de video + fotos
 
-        echo "</div>"; // fin del texto e información
-
-    echo "</div>"; // fin del contenedor principal
+echo "</div>"; // cierre de video + fotos
+echo "</div>"; // cierre de texto e información
+echo "</div>"; // cierre del contenedor principal
 
 }
 
