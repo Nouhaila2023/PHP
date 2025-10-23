@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +10,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Login</title>
+    <title>Login</title>
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
@@ -32,20 +35,21 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">¡Bienvenido de nuevo!</h1>
                                     </div>
-                                    <form class="user">
+                                    <!-- Añadir action para donde enviar los datos y method para enviar los datos -->
+                                    <form class="user" action="controlador.php" method="POST">
+
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
+                                                id="exampleInputEmail" aria-describedby="emailHelp" name="email"
                                                 placeholder="Introduzca su dirección de correo electrónico...">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Contraseña">
+                                                id="exampleInputPassword" name="contrasena" placeholder="Contraseña">
                                         </div>
                                
-                                        <a href="tables.php" class="btn btn-primary btn-user btn-block">
-                                            Acceso
-                                        </a>
+                                        <input type="submit" name="login" value="Acceso" class="btn btn-primary btn-user btn-block">
+
                                         
                                         <hr>
                                     </form>

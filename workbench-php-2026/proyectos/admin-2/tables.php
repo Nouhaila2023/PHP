@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['usuario']))
+    header("Location: login.php");
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +16,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Tables</title>
+    <title>Tables</title>
 
     <!-- Custom styles for this template -->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -97,7 +104,11 @@
                              <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                 <!-- para guardar el nombre del usuario in el perfil -->
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                    <?php echo $_SESSION['usuario']; ?>
+                                </span>
+
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
@@ -122,57 +133,42 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
+                                            <th>Nombre</th>
+                                            <th>Fecha Inicio</th>
+                                            <th>Fecha Fin Prevista</th>
+                                            <th>Dias Transcurridos</th>
+                                            <th>Porcentaje Completado</th>
+                                            <th>Importancia</th>
                                         </tr>
                                     </thead>
-                                    
                                     <tbody>
-                                        <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
-                                            <td>2011/04/25</td>
-                                            <td>$320,800</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Garrett Winters</td>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>63</td>
-                                            <td>2011/07/25</td>
-                                            <td>$170,750</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Ashton Cox</td>
-                                            <td>Junior Technical Author</td>
-                                            <td>San Francisco</td>
-                                            <td>66</td>
-                                            <td>2009/01/12</td>
-                                            <td>$86,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Cedric Kelly</td>
-                                            <td>Senior Javascript Developer</td>
-                                            <td>Edinburgh</td>
-                                            <td>22</td>
-                                            <td>2012/03/29</td>
-                                            <td>$433,060</td>
-                                        </tr>
-                                       
+
+                                        <?php
+                                        $posicion = 0;
+                                
+                                        
+                                        foreach ($_SESSION['usuarios'] as $usuario) {
+                                            echo "<tr>";
+                                            echo "<td>" . $usuario['nombre'] . "</td>";
+                                            echo "<td>" . $usuario['fechaInicio'] . "</td>";
+                                            echo "<td>" . $usuario['fechaFin'] . "</td>";
+                                            echo "<td>" . $usuario['diasT'] . "</td>";
+                                            echo "<td>" . $usuario['porcentajeC'] . "</td>";
+                                            echo "<td>" . $usuario['importancia'] . "</td>";
+                                            echo "</tr>";
+                                            $posicion++;
+                                        }
+
+                                        ?>
+
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <!-- /.container-fluid -->
 
