@@ -10,43 +10,43 @@
 
                  <form action="controlador.php" method="POST" id="fnc">
                     <div class="form-floating">
-                         <input type="text" class="form-control" name="dni" placeholder="41234785-F">
-                         <label for="floatingInput">Id</label>
+                        <label for="floatingInput">Id</label>
+                         <input type="text" class="form-control" name="dni">
                      </div>
                      <div class=" form-floating">
-                         <input type="text" class="form-control" name="nombre" placeholder="javier perez">
                          <label for="floatingInput">Nombre</label>
+                         <input type="text" class="form-control" name="nombre">
                      </div>
                      <div class="form-floating">
-                         <input type="text" class="form-control" name="fechaInicio" placeholder="41234785-F">
                          <label for="floatingInput">Fecha Inicio</label>
+                         <input type="date" class="form-control" name="fechaInicio">
                      </div>
                      <div class="form-floating">
-                         <input type="email" class="form-control" name="fechaFin" placeholder="javper@gmail.com">
-                         <label for="floatingInput">Fecha Fin Prevista</label>
+                        <label for="floatingInput">Fecha Fin Prevista</label>
+                        <input type="date" class="form-control" name="fechaFin"">
                      </div>
                       <div class="form-floating">
-                         <input type="email" class="form-control" name="diasT" placeholder="javper@gmail.com">
                          <label for="floatingInput">EmaDias Transcurridosil</label>
+                         <input type="email" class="form-control" name="diasT">
                      </div>
                       <div class="form-floating">
-                         <input type="email" class="form-control" name="porcentajeC" placeholder="javper@gmail.com">
                          <label for="floatingInput">EmPorcentaje Completadoail</label>
+                         <input type="nember" class="form-control" name="porcentajeC">
                      </div>
                       <div class="form-floating">
-                         <input type="email" class="form-control" name="importancia" placeholder="javper@gmail.com">
-                         <label for="floatingInput">Email</label>
+                        <label for="floatingInput">Email</label>
+                         <input type="email" class="form-control" name="importancia">
                      </div>
                       <div class="form-floating">
-                         <input type="email" class="form-control" name="email" placeholder="javper@gmail.com">
-                         <label for="floatingInput">Importancia</label>
+                        <label for="floatingInput">Importancia</label>
+                         <input type="nember" class="form-control" name="email">
                      </div>
                  </form>
 
              </div>
              <div class="modal-footer">
                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                 <button type="submit" class="btn btn-primary" name="nuevoCliente" form="fnc">Guardar</button>
+                 <button type="submit" class="btn btn-primary" name="nuevo" form="fnc">Guardar</button>
              </div>
          </div>
      </div>
@@ -56,3 +56,6 @@
 
 <script src="./vendor/bootstrap/js/bootstrap.min.js"></script>
  <script src="./vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+ <script src="./js/bootstrap.min.js"></script>
+ <script src="./js/bootstrap.bundle.min.js"></script>

@@ -250,6 +250,8 @@ if (!isset($_SESSION['usuario'])) {
 
     <!-- Page level custom scripts -->
     <script src="js/demo/datatables-demo.js"></script> 
+    <!-- footer -->
+     <?php include_once("footer.php"); ?>
 
 </body>
 
