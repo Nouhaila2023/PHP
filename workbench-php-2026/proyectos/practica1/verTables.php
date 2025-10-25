@@ -154,46 +154,24 @@ if (!isset($_SESSION['usuario'])) {
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Nombre</th>
-                                            <th>Fecha Inicio</th>
-                                            <th>Fecha Fin Prevista</th>
-                                            <th>Dias Transcurridos</th>
-                                            <th>Porcentaje Completado %</th>
-                                            <th>Importancia</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                               
 
-                                        <?php
-                                        $posicion = 0;
-                                
-                                        
-                                        foreach ($_SESSION['proyectos'] as $proyecto) {
-                                            echo "<tr>";
-                                            echo "<td>" . $proyecto['nombre'] . "</td>";
-                                            echo "<td>" . $proyecto['fechaInicio'] . "</td>";
-                                            echo "<td>" . $proyecto['fechaFin'] . "</td>";
-                                            echo "<td>" . $proyecto['diasT'] . "</td>";
-                                            echo "<td>" . $proyecto['porcentajeC'] . "</td>";
-                                            echo "<td>" . $proyecto['importancia'] . "</td>";
-                                            echo "<td>";
-
-                                           echo "<a class='btn btn-success' style='margin-left: 10px;' href='controlador.php?accion=verInformacion&id=" . $proyecto['id'] . "'><i class='fa-solid fa-eye'></i></a>";
-
-
-                                          echo "<a class='btn btn-danger' style='margin-left: 10px;' href='controlador.php?accion=delProycto&posicion=" . $posicion . "'><i class='fa-solid fa-trash'></i></a>";
-
-                                            echo "</td>";
-                                            echo "</tr>";
-                                            $posicion++;
-                                        }
-
-                                        ?>
-                                </table>
+                                        <div class="card">
+                <div class="card-header">
+                    Detalle de Proyecto
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title"><?= $_REQUEST['id']; ?></h5>
+                    <p class="card-text"><?= $_REQUEST['nombre']; ?></p>
+                    <p class="card-text"><?= $_REQUEST['fechaInicio']; ?></p>
+                    <p class="card-text"><?= $_REQUEST['fechaFin']; ?></p>
+                    <p class="card-text"><?= $_REQUEST['diasT']; ?></p>
+                    <p class="card-text"><?= $_REQUEST['porcentajeC']; ?></p>
+                    <p class="card-text"><?= $_REQUEST['importancia']; ?></p>
+                    <a href="./tables.php" class="btn btn-primary">Volver</a>
+                </div>
+            </div>
+                              
                             </div>
                         </div>
                     </div>

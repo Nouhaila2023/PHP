@@ -11,7 +11,7 @@
                  <form action="controlador.php" method="POST" id="fnc">
                     <div class="form-floating">
                         <label for="floatingInput">Id</label>
-                         <input type="text" class="form-control" name="dni">
+                         <input type="text" class="form-control" name="id">
                      </div>
                      <div class=" form-floating">
                          <label for="floatingInput">Nombre</label>
@@ -26,20 +26,16 @@
                         <input type="date" class="form-control" name="fechaFin"">
                      </div>
                       <div class="form-floating">
-                         <label for="floatingInput">EmaDias Transcurridosil</label>
-                         <input type="email" class="form-control" name="diasT">
+                         <label for="floatingInput">Dias Transcurridosil</label>
+                         <input type="number" class="form-control" name="diasT">
                      </div>
                       <div class="form-floating">
-                         <label for="floatingInput">EmPorcentaje Completadoail</label>
-                         <input type="nember" class="form-control" name="porcentajeC">
-                     </div>
-                      <div class="form-floating">
-                        <label for="floatingInput">Email</label>
-                         <input type="email" class="form-control" name="importancia">
+                         <label for="floatingInput">Porcentaje Completadoail</label>
+                         <input type="number" class="form-control" name="porcentajeC">
                      </div>
                       <div class="form-floating">
                         <label for="floatingInput">Importancia</label>
-                         <input type="nember" class="form-control" name="email">
+                         <input type="number" class="form-control" name="importancia">
                      </div>
                  </form>
 

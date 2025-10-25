@@ -17,8 +17,6 @@
                         <a class="dropdown-item" href="controlador.php?accion=cerrarsesion">Cerrar</a>
                     </div>
                 </li>
-
-
                     
         </div>
     </div>
