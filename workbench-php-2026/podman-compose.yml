@@ -30,6 +30,6 @@ services:
       MARIADB_USER: usuario
       MARIADB_PASSWORD: usuario
     ports:
-      - "3310:3306"
+      - "3307:3306"
     volumes:
       - ./mariadb:/var/lib/mysql

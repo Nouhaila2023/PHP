@@ -1,0 +1,1 @@
+## En esta sección tendremos ejercicios de PHP con acceso a BBDD con PDO
