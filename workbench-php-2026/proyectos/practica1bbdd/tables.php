@@ -127,6 +127,10 @@ if (!isset($_SESSION['usuario'])) {
                         <div class="topbar-divider d-none d-sm-block"></div>
  <!-- header -->
     <?php include_once("header.php"); ?>
+    <?php include_once("modelo.php"); ?>
+        <?php
+        $incidencias = getIncidencia();
+        ?>
                         
                     </ul>
                 </nav>
@@ -157,13 +161,11 @@ if (!isset($_SESSION['usuario'])) {
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>Nombre</th>
-                                            <th>Fecha Inicio</th>
-                                            <th>Fecha Fin Prevista</th>
-                                            <th>Dias Transcurridos</th>
-                                            <th>Porcentaje Completado %</th>
-                                            <th>Importancia</th>
-                                            <th>Acciones</th>
+                                            <th>Título</th>
+                                            <th>Tipo</th>
+                                            <th>Estado</th>
+                                            <th>Prioridad</th>
+                                            <th>Fecha De Creación</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -172,20 +174,18 @@ if (!isset($_SESSION['usuario'])) {
                                         $posicion = 0;
                                 
                                         
-                                        foreach ($_SESSION['proyectos'] as $proyecto) {
+                                        foreach ($incidencias as $incidencia) {
                                             echo "<tr>";
-                                            echo "<td>" . $proyecto['nombre'] . "</td>";
-                                            echo "<td>" . $proyecto['fechaInicio'] . "</td>";
-                                            echo "<td>" . $proyecto['fechaFin'] . "</td>";
-                                            echo "<td>" . $proyecto['diasT'] . "</td>";
-                                            echo "<td>" . $proyecto['porcentajeC'] . "</td>";
-                                            echo "<td>" . $proyecto['importancia'] . "</td>";
+                                            echo "<td>" . $incidencia['titulo'] . "</td>";
+                                            echo "<td>" . $incidencia['tipo'] . "</td>";
+                                            echo "<td>" . $incidencia['estado'] . "</td>";
+                                            echo "<td>" . $incidencia['prioridad'] . "</td>";
+                                            echo "<td>" . $incidencia['fecha_creacion'] . "</td>";
                                             echo "<td>";
 
-                                           echo "<a class='btn btn-success' style='margin-left: 10px;' href='controlador.php?accion=verInformacion&id=" . $proyecto['id'] . "'><i class='fa-solid fa-eye'></i></a>";
+                                           echo "<a class='btn btn-success' style='margin-left: 10px;' href='controlador.php?accion=verInformacion&id=" . $incidencia['id_incidencia'] . "'><i class='fa-solid fa-eye'></i></a>";
 
-
-                                          echo "<a class='btn btn-danger' style='margin-left: 10px;' href='controlador.php?accion=delProycto&posicion=" . $posicion . "'><i class='fa-solid fa-trash'></i></a>";
+                                            echo "<a class='btn btn-danger' style='margin-left: 10px;' href='controlador.php?accion=delProycto&posicion=" . $posicion . "'><i class='fa-solid fa-trash'></i></a>";
 
                                             echo "</td>";
                                             echo "</tr>";

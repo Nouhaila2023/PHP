@@ -1,21 +1,33 @@
 <?php
 session_start();
 
-if (isset($_POST['login'])) {
-    $_SESSION['usuario'] = $_POST['email'];
+require_once("modelo.php");
 
-    // Datos simulados de usuarios
-    $_SESSION['proyectos'] = array(
-    array("id" => "001", "nombre" => "Sistema de Inventario", "fechaInicio" => "02/02/2020", "fechaFin" => "23/03/2020", "diasT" => "22", "porcentajeC" => "50", "importancia" => "2"),
-    array("id" => "002", "nombre" => "Página Web Corporativa", "fechaInicio" => "03/03/2020", "fechaFin" => "24/04/2020", "diasT" => "22", "porcentajeC" => "55", "importancia" => "1"),
-    array("id" => "003", "nombre" => "Aplicación Móvil de Ventas", "fechaInicio" => "04/04/2020", "fechaFin" => "25/05/2020", "diasT" => "22", "porcentajeC" => "40", "importancia" => "4"),
-    array("id" => "004", "nombre" => "Sistema de Recursos Humanos", "fechaInicio" => "25/05/2020", "fechaFin" => "26/06/2020", "diasT" => "22", "porcentajeC" => "45", "importancia" => "3"),
-    array("id" => "005", "nombre" => "Plataforma de E-Learning", "fechaInicio" => "26/06/2020", "fechaFin" => "27/07/2020", "diasT" => "22", "porcentajeC" => "75", "importancia" => "5")
-);
+//Formulario de Login
+if (isset($_REQUEST["login"])) {
+    $email = $_REQUEST['email'];
+    $password = $_REQUEST['contrasena'];
 
-
-    header("Location: tables.php");
+    //Habría que validar en BBDD que el password sea correcto
+    $password_hash = getPassword($email);
+    if (isset($password_hash)) {
+        //Chequear que sea válida
+        if (password_verify($password, $password_hash)) {
+            //Login ok
+            //Grabamos en la sesión el email logueado
+            $_SESSION['usuario'] = $email;
+            header("Location: tables.php");
+        } else {
+            //Contraseña incorrecta
+            header("Location: login.php?error=passwordincorrecto");
+        }
+    } else {
+        //No existe ese email
+        header("Location: login.php?error=emailnoencontrado");
+    }
 }
+
+
 
 //Formulario de nuevo cliente
 if (isset($_REQUEST["nuevo"])) {

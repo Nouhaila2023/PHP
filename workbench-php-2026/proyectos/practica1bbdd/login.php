@@ -24,6 +24,17 @@
 
 <body class="bg-gradient-primary">
 
+
+   
+
+     <?php
+         //cualquier otro error que envíes 
+        if (isset($_REQUEST['error'])) {
+            echo "<p class='text-danger'>" . $_REQUEST['error'] . "</p>";
+        } 
+        ?>
+
+
     <div class="container">
                     <!-- Outer Row -->
             <div class="row justify-content-center" style="min-height: 100vh; display: flex; align-items: center;">
