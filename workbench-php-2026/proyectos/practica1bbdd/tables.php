@@ -4,6 +4,9 @@ if (!isset($_SESSION['usuario'])) {
     header("Location: login.php");
     exit();
 }
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -126,10 +129,10 @@ if (!isset($_SESSION['usuario'])) {
 
                         <div class="topbar-divider d-none d-sm-block"></div>
  <!-- header -->
-    <?php include_once("header.php"); ?>
-    <?php include_once("modelo.php"); ?>
-        <?php
-        $incidencias = getIncidencia();
+    <?php   include_once("header.php"); 
+            include_once("modelo.php"); 
+            $incidencias = getIncidencia();
+
         ?>
                         
                     </ul>
@@ -146,6 +149,39 @@ if (!isset($_SESSION['usuario'])) {
 <button type="button" class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#eliminarTodo">
     Eliminar todo
 </button>
+
+            <form method="GET" action="tables.php" class="row mb-3">
+                <div class="col">
+                    <select name="estado" class="form-control">
+                        <option value="">Estado (Todos)</option>
+                        <option>Pendiente</option>
+                        <option>En proceso</option>
+                        <option>Resuelta</option>
+                        <option>Cerrada</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <select name="tipo" class="form-control">
+                        <option value="">Tipo (Todos)</option>
+                        <option>Hardware</option>
+                        <option>Software</option>
+                        <option>Red</option>
+                        <option>Otros</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <select name="prioridad" class="form-control">
+                        <option value="">Prioridad (Todos)</option>
+                        <option>Baja</option>
+                        <option>Media</option>
+                        <option>Alta</option>
+                        <option>Crítica</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <button class="btn btn-primary w-100">Filtrar</button>
+                </div>
+            </form>
 
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Tables</h1>

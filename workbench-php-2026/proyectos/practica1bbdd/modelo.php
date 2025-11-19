@@ -55,3 +55,32 @@ function getPassword($email)
     }
 }
 
+
+/*filtrar*/
+
+function getIncidenciasPorTecnico($id_tecnico, $estado, $tipo, $prioridad) {
+    $conexion = conexionDB();
+    
+    $sql = "SELECT * FROM incidencia WHERE id_tecnico = :id_tecnico";
+    $params = [":id_tecnico" => $id_tecnico];
+
+    if ($estado != "") {
+        $sql .= " AND estado = :estado";
+        $params[":estado"] = $estado;
+    }
+    if ($tipo != "") {
+        $sql .= " AND tipo = :tipo";
+        $params[":tipo"] = $tipo;
+    }
+    if ($prioridad != "") {
+        $sql .= " AND prioridad = :prioridad";
+        $params[":prioridad"] = $prioridad;
+    }
+
+    $stmt = $conexion->prepare($sql);
+    $stmt->execute($params);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
