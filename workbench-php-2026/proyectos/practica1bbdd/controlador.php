@@ -3,93 +3,112 @@ session_start();
 
 require_once("modelo.php");
 
-//Formulario de Login
+/*
+LOGIN
+*/
 if (isset($_REQUEST["login"])) {
     $email = $_REQUEST['email'];
     $password = $_REQUEST['contrasena'];
 
-    //Habría que validar en BBDD que el password sea correcto
-    $password_hash = getPassword($email);
-    if (isset($password_hash)) {
-        //Chequear que sea válida
-        if (password_verify($password, $password_hash)) {
-            //Login ok
-            //Grabamos en la sesión el email logueado
-            $_SESSION['usuario'] = $email;
-            header("Location: tables.php");
-        } else {
-            //Contraseña incorrecta
-            header("Location: login.php?error=passwordincorrecto");
-        }
+    $tecnico = validarTecnico($email, $password); // pasar también $password
+
+    if ($tecnico != null) {
+        $_SESSION['usuario'] = $tecnico['id_tecnico'];
+        $_SESSION['nombre'] = $tecnico['nombre'];
+        header("Location: tables.php");
+        exit();
     } else {
-        //No existe ese email
-        header("Location: login.php?error=emailnoencontrado");
+        header("Location: login.php?error=Credenciales incorrectas");
+        exit();
     }
 }
 
+/*
+NUEVA INCIDENCIA
+ */
+if (isset($_REQUEST["nuevaIncidencia"])) {
 
+    $titulo = $_REQUEST['titulo'];
+    $descripcion = $_REQUEST['descripcion'];
+    $tipo = $_REQUEST['tipo'];
+    $prioridad = $_REQUEST['prioridad'];
+    $id_tecnico = $_SESSION['usuario'];
+    $fecha_creacion = date("Y-m-d H:i:s");
+    $estado = "Pendiente";
 
-//Formulario de nuevo cliente
-if (isset($_REQUEST["nuevo"])) {
+    crearIncidencia($titulo, $descripcion, $tipo, $prioridad, $estado, $fecha_creacion, $id_tecnico);
 
-   $proyecto = array(
-    "id" => $_REQUEST["id"],
-    "nombre" => $_REQUEST["nombre"],
-    "fechaInicio" => $_REQUEST["fechaInicio"],
-    "fechaFin" => $_REQUEST["fechaFin"],
-    "diasT" => $_REQUEST["diasT"],
-    "porcentajeC" => $_REQUEST["porcentajeC"],
-    "importancia" => $_REQUEST["importancia"]);
-
-    array_push($_SESSION['proyectos'], $proyecto);
-    header("Location: tables.php");
-
-}
-
-if (isset($_REQUEST["eliminarTodo"])) {
-    $_SESSION['proyectos'] = array();
-    header("Location: tables.php");
+    header("Location: dashboard.php?msg=creada");
 }
 
 
-if (isset($_REQUEST['accion'])) {
-    switch ($_REQUEST['accion']) {
-        //Cerrar sesión y redirigir a login.php
-        case 'cerrarsesion':
-            session_destroy();
+/* 
+MODIFICAR INCIDENCIA
+ */
+if (isset($_REQUEST["modificarIncidencia"])) {
+
+    $id = $_REQUEST['id_incidencia'];
+    $titulo = $_REQUEST['titulo'];
+    $descripcion = $_REQUEST['descripcion'];
+    $tipo = $_REQUEST['tipo'];
+    $prioridad = $_REQUEST['prioridad'];
+    $estado = $_REQUEST['estado'];
+    $fecha_actualizacion = date("Y-m-d H:i:s");
+
+    actualizarIncidencia($id, $titulo, $descripcion, $tipo, $prioridad, $estado, $fecha_actualizacion);
+
+    header("Location: dashboard.php?msg=modificada");
+}
+
+
+/*
+   ACCIONES POR URL (GET)
+*/
+$accion = $_REQUEST['accion'] ?? '';
+
+switch($accion) {
+    case 'login':
+        // validar credenciales
+        break;
+    case 'logout':
+        session_destroy();
+        header("Location: login.php");
+        break;
+    case 'listar':
+        if (!isset($_SESSION['usuario'])) {
             header("Location: login.php");
-            break;
+            exit();
+        }
 
-         case 'delProycto':
-            $posicion = $_REQUEST['posicion'];
-            unset($_SESSION['proyectos'][$posicion]);
-            $_SESSION['proyectos'] = array_values($_SESSION['proyectos']); //Regenerar índices y no dejar huecos
-
-            header("Location: tables.php");
-            break;    
-
-        case 'verInformacion':
-            $idP = $_REQUEST['id'];
-        
-            foreach ($_SESSION['proyectos'] as $proyecto) {
-                if (strcmp($proyecto['id'], $idP) == 0) {
-                    $nombre = $proyecto['nombre'];
-                    $fechaInicio = $proyecto['fechaInicio'];
-                    $fechaFin = $proyecto['fechaFin'];
-                    $diasT = $proyecto['diasT'];
-                    $porcentajeC = $proyecto['porcentajeC'];
-                    $importancia = $proyecto['importancia'];
-                }
-            }
-
-            header("Location: verTables.php?id=" . $idP . "&nombre=" . $nombre . "&fechaInicio=" . $fechaInicio . "&fechaFin=" . $fechaFin . "&diasT=" . $diasT . "&porcentajeC=" . $porcentajeC . "&importancia=" . $importancia);
-
-            break;
-        
-        default:
-            # code...
-            break;
-    }
+        $filtros = [
+            'estado' => $_GET['estado'] ?? '',
+            'tipo' => $_GET['tipo'] ?? '',
+            'prioridad' => $_GET['prioridad'] ?? ''
+        ];
+        $incidencias = obtenerIncidenciasPorTecnico($_SESSION['usuario'], $filtros);
+        // pasamos $incidencias a la vista
+        include("tables.php");
+        break;
+    case 'crear':
+        crearIncidencia($_POST); // pasar datos del formulario
+        header("Location: tables.php?msg=creada");
+        break;
+    case 'obtener':
+        $incidencia = obtenerIncidencia($_GET['id_incidencia']);
+        include("verTables.php");
+        break;
+    case 'actualizar':
+        actualizarIncidencia($_POST['id_incidencia'], $_POST);
+        header("Location: tables.php?msg=modificada");
+        break;
+    case 'eliminar':
+        eliminarIncidencia($_GET['id_incidencia']);
+        header("Location: tables.php?msg=eliminada");
+        break;
+    case 'buscar':
+        $incidencias = buscarIncidencias($_SESSION['usuario'], $_GET['termino']);
+        include("tables.php");
+        break;
 }
 
-   
+?>

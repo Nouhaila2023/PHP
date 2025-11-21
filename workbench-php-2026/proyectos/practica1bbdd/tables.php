@@ -5,6 +5,15 @@ if (!isset($_SESSION['usuario'])) {
     exit();
 }
 
+if (!isset($incidencias)) {
+    require_once("modelo.php");
+    $incidencias = obtenerIncidenciasPorTecnico($_SESSION['usuario']);
+}
+
+// obtener valores para mantener seleccionados
+$sel_estado = $_GET['estado'] ?? '';
+$sel_tipo = $_GET['tipo'] ?? '';
+$sel_prioridad = $_GET['prioridad'] ?? '';
 
 
 ?>
@@ -128,12 +137,18 @@ if (!isset($_SESSION['usuario'])) {
                         </li>
 
                         <div class="topbar-divider d-none d-sm-block"></div>
- <!-- header -->
-    <?php   include_once("header.php"); 
-            include_once("modelo.php"); 
-            $incidencias = getIncidencia();
 
-        ?>
+
+            <?php   
+                    include_once("header.php"); 
+                    include_once("modelo.php"); 
+                    
+        
+                    $incidencias = getIncidencia();
+
+                    //$incidencias = obtenerIncidenciasPorTecnico($_SESSION['usuario']);
+
+                ?>
                         
                     </ul>
                 </nav>

@@ -1,119 +1,117 @@
 <?php
 session_start();
+require_once "modelo.php";
 
-//Formulario de Login
-if (isset($_REQUEST["login"])) {
-    //Habría que validar en BBDD que el password sea correcto
+$accion = $_REQUEST['accion'] ?? '';
 
-    //Grabamos en la sesión el email logueado
-    $_SESSION['usuario'] = $_REQUEST['email'];
+switch ($accion) {
 
-    //Meter en la sesión una tabla ficticia de clientes y otra de incidencias
-    $_SESSION['clientes'] = array(
-        array("nombre" => "Manuel Pérez", "dni" => "23492983-A", "email" => "manper@gmail.com"),
-        array("nombre" => "Sonia Damaso", "dni" => "33444583-Z", "email" => "sondam@gmail.com"),
-        array("nombre" => "Javier Saez", "dni" => "45457895-B", "email" => "javsae@gmail.com"),
-    );
-    $_SESSION['incidencias'] = array(
-        array("id" => "B-00001", "dni" => "23492983-A", "descr" => "Muy lento Internet"),
-        array("id" => "B-00002", "dni" => "33444583-Z", "descr" => "No enciende router"),
-        array("id" => "B-00003", "dni" => "45457895-B", "descr" => "Internet no funciona"),
-        array("id" => "B-00004", "dni" => "23492983-A", "descr" => "El porno no se ve"),
-    );
+    /* -------------------------------------------------------------- LOGIN */
+    case 'login':
+        $email = $_REQUEST['email'] ?? '';
+        $password = $_REQUEST['password'] ?? '';
 
-    header("Location: clientes.php");
-}
+        $tecnico = validarTecnico($email, $password);
 
-//Formulario de nuevo cliente
-if (isset($_REQUEST["nuevoCliente"])) {
-    $cliente = array("nombre" => $_REQUEST["nombre"], "dni" => $_REQUEST["dni"],  "email" =>  $_REQUEST["email"]);
-    array_push($_SESSION['clientes'], $cliente);
-    header("Location: clientes.php");
-}
+        if ($tecnico) {
+            $_SESSION['tecnico'] = $tecnico;
+            header("Location: dashboard.php");
+        } else {
+            header("Location: login.php?error=credenciales");
+        }
+        break;
 
-//Formulario de eliminar todos los clientes
-if (isset($_REQUEST["eliminarClientes"])) {
-    $_SESSION['clientes'] = array();
-    header("Location: clientes.php");
-}
+    /* -------------------------------------------------------------- LOGOUT */
+    case 'logout':
+        session_destroy();
+        header("Location: login.php");
+        break;
 
-//Formulario de nueva incidencia
-if (isset($_REQUEST["nuevaIncidencia"])) {
-    $incidencia = array("id" => $_REQUEST["id"], "dni" => $_REQUEST["dni"], "descr" => $_REQUEST["descr"]);
-    array_push($_SESSION['incidencias'], $incidencia);
-    header("Location: incidencias.php");
-}
+    /* -------------------------------------------------------------- LISTAR INCIDENCIAS */
+    case 'listar':
+        if (!isset($_SESSION['tecnico'])) header("Location: login.php");
 
-//Formulario de eliminar todas las incidencias
-if (isset($_REQUEST["eliminarIncidencias"])) {
-    $_SESSION['incidencias'] = array();
-    header("Location: incidencias.php");
-}
+        $id_tecnico = $_SESSION['tecnico']['id_tecnico'];
+        $filtros = [
+            "estado" => $_REQUEST['estado'] ?? '',
+            "tipo" => $_REQUEST['tipo'] ?? '',
+            "prioridad" => $_REQUEST['prioridad'] ?? ''
+        ];
+        $incidencias = obtenerIncidenciasPorTecnico($id_tecnico, $filtros);
 
+        // Guardar en sesión para leer en dashboard.php
+        $_SESSION['incidencias'] = $incidencias;
+        header("Location: dashboard.php");
+        break;
 
-//Acciones por URL - GET
-if (isset($_REQUEST['accion'])) {
-    switch ($_REQUEST['accion']) {
-        //Cerrar sesión y redirigir a login.php
-        case 'cerrarsesion':
-            session_destroy();
-            header("Location: login.php");
-            break;
-        //Eliminar cliente
-        case 'delCliente':
-            //Eliminamos la posición indicada del array
-            $posicion = $_REQUEST['posicion'];
-            unset($_SESSION['clientes'][$posicion]);
-            $_SESSION['clientes'] = array_values($_SESSION['clientes']); //Regenerar índices y no dejar huecos
+    /* -------------------------------------------------------------- CREAR INCIDENCIA */
+    case 'crear':
+        if (!isset($_SESSION['tecnico'])) header("Location: login.php");
 
-            header("Location: clientes.php");
-            break;
-        //Eliminar incidencia
-        case 'delIncidencia':
-            //Eliminamos la posición indicada del array
-            $posicion = $_REQUEST['posicion'];
-            unset($_SESSION['incidencias'][$posicion]);
-            $_SESSION['incidencias'] = array_values($_SESSION['incidencias']); //Regenerar índices y no dejar huecos
+        $datos = [
+            "titulo" => $_REQUEST['titulo'],
+            "descripcion" => $_REQUEST['descripcion'],
+            "tipo" => $_REQUEST['tipo'],
+            "prioridad" => $_REQUEST['prioridad'],
+            "id_tecnico" => $_SESSION['tecnico']['id_tecnico']
+        ];
 
-            header("Location: incidencias.php");
-            break;
-        //Ver incidencia en detalle
-        case 'verIncidencia':
-            $idIncidencia = $_REQUEST['id'];
-            //Buscamos la incidencia por su ID en la sesión
-            foreach ($_SESSION['incidencias'] as $incidencia) {
-                if (strcmp($incidencia['id'], $idIncidencia) == 0) {
-                    $dni = $incidencia['dni'];
-                    $descr = $incidencia['descr'];
-                }
-            }
+        crearIncidencia($datos);
+        header("Location: dashboard.php?msg=incidencia_creada");
+        break;
 
-            header("Location: verIncidencia.php?id=" . $idIncidencia . "&dni=" . $dni . "&descr=" . $descr);
+    /* -------------------------------------------------------------- OBTENER UNA INCIDENCIA */
+    case 'obtener':
+        if (!isset($_SESSION['tecnico'])) header("Location: login.php");
 
-            break;
+        $id = $_REQUEST['id_incidencia'];
+        $incidencia = obtenerIncidencia($id);
 
-        //Ver cliente en detalle
-        case 'verCliente':
-            $dniCliente = $_REQUEST['dni'];
-            //Buscamos el cliente por dni en la sesión
-            foreach ($_SESSION['clientes'] as $cliente) {
-                if (strcmp($cliente['dni'], $dniCliente) == 0) {
-                    $nombre = $cliente['nombre'];
-                    $email = $cliente['email'];
-                }
-            }
+        $_SESSION['incidencia'] = $incidencia;
+        header("Location: verIncidencia.php?id=$id");
+        break;
 
-            header("Location: verCliente.php?dni=" . $dniCliente . "&nombre=" . $nombre . "&email=" . $email);
+    /* -------------------------------------------------------------- ACTUALIZAR INCIDENCIA */
+    case 'actualizar':
+        if (!isset($_SESSION['tecnico'])) header("Location: login.php");
 
-            break;
+        $id = $_REQUEST['id_incidencia'];
+        $datos = [
+            "titulo" => $_REQUEST['titulo'],
+            "descripcion" => $_REQUEST['descripcion'],
+            "tipo" => $_REQUEST['tipo'],
+            "estado" => $_REQUEST['estado'],
+            "prioridad" => $_REQUEST['prioridad']
+        ];
 
-        //Generar informe de incidencias
-        case 'generarInformeIncidencias':
-            header("Location: informeIncidencias.php");
-            break;
+        actualizarIncidencia($id, $datos);
+        header("Location: verIncidencia.php?id=$id&msg=actualizada");
+        break;
 
-        default:
-            # code...
-            break;
-    }
+    /* -------------------------------------------------------------- ELIMINAR INCIDENCIA */
+    case 'eliminar':
+        if (!isset($_SESSION['tecnico'])) header("Location: login.php");
+
+        $id = $_REQUEST['id_incidencia'];
+        eliminarIncidencia($id);
+        header("Location: dashboard.php?msg=eliminada");
+        break;
+
+    /* -------------------------------------------------------------- BUSCAR INCIDENCIAS */
+    case 'buscar':
+        if (!isset($_SESSION['tecnico'])) header("Location: login.php");
+
+        $termino = $_REQUEST['termino'];
+        $id_tecnico = $_SESSION['tecnico']['id_tecnico'];
+
+        $resultados = buscarIncidencias($id_tecnico, $termino);
+        $_SESSION['busqueda'] = $resultados;
+
+        header("Location: dashboard.php?busqueda=" . urlencode($termino));
+        break;
+
+    /* -------------------------------------------------------------- ACCIÓN DESCONOCIDA */
+    default:
+        header("Location: login.php");
+        break;
 }

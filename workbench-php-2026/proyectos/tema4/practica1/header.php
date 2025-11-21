@@ -6,9 +6,7 @@
                     <li>
                         <a href="./clientes.php" class="nav-link px-2 link-dark">Clientes</a>
                     </li>
-                    <li>
-                        <a href="./incidencias.php" class="nav-link px-2 link-dark">Incidencias</a>
-                    </li>
+                    
                 </ul>
 
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
