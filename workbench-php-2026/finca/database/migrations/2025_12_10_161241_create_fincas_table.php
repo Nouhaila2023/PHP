@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('ubicacion');
-            $table->decimal('hectareas_totales', 8, 2);
-            $table->text('descripcion')->nullable();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
+            $table->double('hectareas_totales');
+            $table->string('descripcion')->nullable();
+            $table->foreignId('user_id')->nullable()->index();
             $table->timestamps();
         });
     }
@@ -29,17 +29,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('fincas');
     }
-
-    //Relación: una finca pertenece a un usuario
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    //Relación: una finca puede tener muchas parcelas
-    public function parcelas()
-    {
-        return $this->hasMany(Parcela::class);
-    }
-    
 };
