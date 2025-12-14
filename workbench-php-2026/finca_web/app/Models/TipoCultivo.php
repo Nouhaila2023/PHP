@@ -22,4 +22,6 @@ class TipoCultivo extends Model
     {
         return $this->hasMany(Parcela::class);
     }
+
+
 }

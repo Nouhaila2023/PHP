@@ -22,14 +22,17 @@ class Parcela extends Model
     ];
 
     // Una parcela pertenece a una finca
+
     public function finca()
     {
         return $this->belongsTo(Finca::class);
     }
 
     // Una parcela tiene un tipo de cultivo asignado
+
     public function tipoCultivo()
     {
         return $this->belongsTo(TipoCultivo::class);
     }
+
 }
